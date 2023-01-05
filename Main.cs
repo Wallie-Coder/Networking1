@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Lidgren.Network;
+using Microsoft.Xna.Framework.Input;
 
 namespace Networking1
 {
     internal class Main
     {
 
-        public Switch sw = new Switch(new Vector2(-5, -5), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw2 = new Switch(new Vector2(-5, 255), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw3 = new Switch(new Vector2(255, -5), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw4 = new Switch(new Vector2(255, 255), new Vector2(250, 250), Input.getSprite("White_Pixel"));
+        public List<String> messages = new List<string>();
+
+        int timer;
+        string s;
 
         public Main() 
         { 
@@ -24,20 +25,37 @@ namespace Networking1
 
         public void Update(GameTime time)
         {
-            sw.Update(time);
-            sw2.Update(time);
-            sw3.Update(time);
-            sw4.Update(time);
-
+            foreach (Keys k in Input.KeysJustPressed())
+                if (k == Keys.Enter)
+                {
+                    messages.Add(s);
+                    s = " ";
+                }
+                else
+                    if (k == Keys.Space)
+                    s += " ";
+                else if (k == Keys.Back)
+                {
+                    if (s.Count() >= 1)
+                    {
+                        s = s.Remove(s.Count() - 1);
+                    }
+                }
+                else
+                    s += k.ToString();
         }
 
         public void Draw(SpriteBatch batch)
         {
-            sw.Draw(batch);
-            sw2.Draw(batch);
-            sw3.Draw(batch);
-            sw4.Draw(batch);
+            batch.Draw(Input.getSprite("White_Pixel"), new Vector2(0, 475), null, Color.DarkGray, 0, Vector2.Zero, new Vector2(400, 25), SpriteEffects.None, 0f);
 
+            for (int i = 0; i < messages.Count; i++)
+            {
+                batch.DrawString(Input.getFont("File"), messages[i], new Vector2(10, 500 - (messages.Count - i + 1) * 20), Color.Black);
+            }
+
+            if(s != null)
+                batch.DrawString(Input.getFont("File"), s, new Vector2(10, 480), Color.Black);
         }
     }
 }

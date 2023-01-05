@@ -16,7 +16,7 @@ namespace Networking1
         internal Main main;
         internal ServerOrClient SorC;
 
-        internal bool connected = false;
+        internal int portNr = 88888;
 
         public Game1()
         {
@@ -55,29 +55,47 @@ namespace Networking1
             Input.Update(gameTime);
 
             main.Update(gameTime);
-            SorC.Update(gameTime, connected);
+            SorC.Update(gameTime);
 
-            if (SorC.Connect.activated == true)
-                if (SorC.Server.activated == true)
-                {
-                    var config = new NetPeerConfiguration("application name")
-                    { Port = 12345 };
-                    var server = new NetServer(config);
-                    server.Start();
 
-                    SorC.Connect.activated = false;
-                }
-                else
-                {
-                    var config = new NetPeerConfiguration("application name");
-                    var client = new NetClient(config);
-                    client.Start();
-                    client.Connect(host: "127.0.0.1", port: 12345);
+            if (SorC.Server.pressed == true || SorC.PeerType == ServerOrClient.Peer.Server)
+            {
+                var config = new NetPeerConfiguration("application name")
+                { Port = portNr };
+                var server = new NetServer(config);
+                server.Start();
 
-                    SorC.Connect.activated = false;
+                main.messages.Add("started Server");
 
-                    connected = true;
-                }
+                SorC.Server.pressed = false;
+                SorC.Server.Name = "Server";
+                SorC.PeerType = ServerOrClient.Peer.Server;
+            }
+
+
+
+
+
+
+
+            if (SorC.Client.pressed == true && SorC.PeerType == ServerOrClient.Peer.None)
+            {
+                var config = new NetPeerConfiguration("application name");
+                var client = new NetClient(config);
+                client.Start();
+                client.Connect(host: "127.0.0.1", port: portNr);
+
+                main.messages.Add("connectd to host: " + "12345");
+
+                var message = client.CreateMessage();
+                message.Write("New Client Connected");
+
+                main.messages.Add(client.SendMessage(message, NetDeliveryMethod.ReliableOrdered).ToString());
+
+                SorC.Client.pressed = false;
+                SorC.Client.Name = "Client";
+                SorC.PeerType = ServerOrClient.Peer.Client;
+            }
 
             base.Update(gameTime);
         }

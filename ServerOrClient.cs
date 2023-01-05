@@ -10,44 +10,41 @@ namespace Networking1
 {
     internal class ServerOrClient
     {
-        internal Switch Server = new Switch(new Vector2(510, 50), new Vector2(250, 145), Input.getSprite("White_Pixel"));
+        internal enum Peer {Server, Client, None}
 
-        internal Switch Connect = new Switch(new Vector2(510, 300), new Vector2(250, 145), Input.getSprite("White_Pixel"));
+        internal Peer PeerType = Peer.None;
 
-        bool connectstatus = false;
+        internal Button Server = new Button(new Vector2(510, 50), new Vector2(150, 100), "start server");
+
+        internal Button Client = new Button(new Vector2(510, 300), new Vector2(150, 100), "start client");
 
 
-        internal void Update(GameTime Time, bool connectStatus)
+        internal void Update(GameTime Time)
         {
-            Server.Update(Time);
+            if (PeerType == Peer.None)
+            {
+                Server.Update(Time);
+                Client.Update(Time);
+            }
 
-            Connect.Update(Time);
-
-            this.connectstatus = connectStatus;
+            //Server.Update(Time);
+            //Client.Update(Time);
         }
 
         internal void Draw(SpriteBatch Batch)
         {
-            Server.Draw(Batch);
-            Connect.Draw(Batch);
 
-            if(Server.activated == true)
+            if (PeerType == Peer.None)
             {
-                Batch.DrawString(Input.getFont("File"), "Server", new Vector2(550, 100), Color.Black);
+                Server.Draw(Batch);
+                Client.Draw(Batch);
             }
-            else
-            {
-                Batch.DrawString(Input.getFont("File"), "Client", new Vector2(550, 100), Color.Black);
-            }
+            if (PeerType == Peer.Client)
+                Client.Draw(Batch);
+            if (PeerType == Peer.Server)
+                Server.Draw(Batch);
 
-            if(connectstatus == true)
-            {
-                Batch.DrawString(Input.getFont("File"), "Connected", new Vector2(550, 300), Color.Black);
-            }
-            else
-            {
-                Batch.DrawString(Input.getFont("File"), "not Connected", new Vector2(550, 300), Color.Black);
-            }
+
         }
     }
 }

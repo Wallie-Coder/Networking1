@@ -64,6 +64,17 @@ namespace Networking1
             return false;
         }
 
+        internal static List<Keys> KeysJustPressed()
+        {
+            List<Keys> keys = new List<Keys>();
+
+            foreach (Keys k in keyboard.GetPressedKeys())
+                if(!oldkeyboard.GetPressedKeys().Contains(k))
+                    keys.Add(k);
+
+            return keys;
+        }
+
         internal static Texture2D getSprite(string assetName)
         {
             return content.Load<Texture2D>(assetName);
