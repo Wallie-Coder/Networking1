@@ -65,7 +65,7 @@ namespace Networking1
                 var server = new NetServer(config);
                 server.Start();
 
-                main.messages.Add("started Server");
+                main.messages.Add("started Server: " + portNr);
 
                 SorC.Server.pressed = false;
                 SorC.Server.Name = "Server";
@@ -85,7 +85,7 @@ namespace Networking1
                 client.Start();
                 client.Connect(host: "127.0.0.1", port: portNr);
 
-                main.messages.Add("connectd to host: " + "12345");
+                main.messages.Add("connectd to host: " + portNr);
 
                 var message = client.CreateMessage();
                 message.Write("New Client Connected");
