@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,6 +14,7 @@ namespace Networking1
         public static ContentManager _content;
 
         internal Main main;
+        internal ServerOrClient SorC;
 
         public Game1()
         {
@@ -34,10 +36,11 @@ namespace Networking1
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _graphics.PreferredBackBufferHeight = 500;
-            _graphics.PreferredBackBufferWidth = 500;
+            _graphics.PreferredBackBufferWidth = 700;
             _graphics.ApplyChanges();
 
             main = new Main();
+            SorC = new ServerOrClient();
         }
 
         protected override void Update(GameTime gameTime)
@@ -50,6 +53,25 @@ namespace Networking1
             Input.Update(gameTime);
 
             main.Update(gameTime);
+            SorC.Update(gameTime);
+
+            if (SorC.Connect.activated == true)
+                if (SorC.Server.activated == true)
+                {
+                    var config = new NetPeerConfiguration("application name")
+                    { Port = 12345 };
+                    var server = new NetServer(config);
+                    server.Start();
+
+                    SorC.Connect.activated = false;
+                }
+                else
+                {
+                    var config = new NetPeerConfiguration("application name");
+                    var client = new NetClient(config);
+                    client.Start();
+                    client.Connect(host: "127.0.0.1", port: 12345);
+                }
 
             base.Update(gameTime);
         }
@@ -61,6 +83,8 @@ namespace Networking1
             _spriteBatch.Begin();
 
             main.Draw(_spriteBatch);
+            SorC.Draw(_spriteBatch);
+            
 
             _spriteBatch.End();
 

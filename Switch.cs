@@ -15,7 +15,7 @@ namespace Networking1
         Texture2D sprite;
         Vector2 size;
         Vector2 location;
-        bool activated = false;
+        internal bool activated = false;
         bool hit = false;
 
 

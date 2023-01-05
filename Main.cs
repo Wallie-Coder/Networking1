@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D9;
+using Lidgren.Network;
 
 namespace Networking1
 {
     internal class Main
     {
 
-        public Switch sw = new Switch(new Vector2(0, 0), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw2 = new Switch(new Vector2(0, 250), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw3 = new Switch(new Vector2(250, 0), new Vector2(250, 250), Input.getSprite("White_Pixel"));
-        public Switch sw4 = new Switch(new Vector2(250, 250), new Vector2(250, 250), Input.getSprite("White_Pixel"));
+        public Switch sw = new Switch(new Vector2(-5, -5), new Vector2(250, 250), Input.getSprite("White_Pixel"));
+        public Switch sw2 = new Switch(new Vector2(-5, 255), new Vector2(250, 250), Input.getSprite("White_Pixel"));
+        public Switch sw3 = new Switch(new Vector2(255, -5), new Vector2(250, 250), Input.getSprite("White_Pixel"));
+        public Switch sw4 = new Switch(new Vector2(255, 255), new Vector2(250, 250), Input.getSprite("White_Pixel"));
 
         public Main() 
         { 
