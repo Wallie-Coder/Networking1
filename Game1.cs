@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.ComponentModel.Design.Serialization;
 using LiteNetLib;
+using LiteNetLib.Layers;
+using LiteNetLib.Utils;
 
 namespace Networking1
 {
@@ -64,18 +66,28 @@ namespace Networking1
                 server.Start(9050 /* port */);
 
                 SorC.PeerType = ServerOrClient.Peer.Server;
+                SorC.Server.Name = "Server";
             }
 
-            if(SorC.Client.pressed)
+            if (SorC.Client.pressed)
             {
                 EventBasedNetListener listener = new EventBasedNetListener();
                 NetManager client = new NetManager(listener);
                 client.Start();
                 client.Connect("192.169.100.254" /* host ip or name */, 9050 /* port */, "SomeConnectionKey" /* text key or NetDataWriter */);
 
-                main.messages.Add(client.ConnectedPeersCount.ToString());
+                listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod) =>
+                {
+                    main.messages.Add("We got: {0}" + dataReader.GetString(100 /* max length of string */));
+                    dataReader.Recycle();
+                };
+
+                client.Stop();
+
+
 
                 SorC.PeerType = ServerOrClient.Peer.Client;
+                SorC.Client.Name = "Client";
             }
 
 
