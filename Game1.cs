@@ -64,6 +64,8 @@ namespace Networking1
                     server.Start();
 
                     SorC.Connect.activated = false;
+
+                    main.sw2.activated = true;
                 }
                 else
                 {
@@ -71,6 +73,10 @@ namespace Networking1
                     var client = new NetClient(config);
                     client.Start();
                     client.Connect(host: "127.0.0.1", port: 12345);
+
+                    SorC.Connect.activated = false;
+
+                    main.sw.activated = true;
                 }
 
             base.Update(gameTime);
