@@ -60,9 +60,9 @@ namespace Networking1
 
             if (SorC.Server.pressed == true)
             {
-                var config = new NetPeerConfiguration("application name")
+                NetPeerConfiguration config = new NetPeerConfiguration("application name")
                 { Port = portNr };
-                var server = new NetServer(config);
+                NetServer server = new NetServer(config);
                 server.Start();
 
                 main.messages.Add("started Server: " + portNr);
@@ -80,8 +80,8 @@ namespace Networking1
 
             if (SorC.Client.pressed == true && SorC.PeerType == ServerOrClient.Peer.None)
             {
-                var config = new NetPeerConfiguration("application name");
-                var client = new NetClient(config);
+                NetPeerConfiguration config = new NetPeerConfiguration("application name");
+                NetClient client = new NetClient(config);
                 client.Start();
                 client.Connect(host: "127.0.0.1", port: portNr);
 
