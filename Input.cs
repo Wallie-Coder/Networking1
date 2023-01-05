@@ -68,5 +68,10 @@ namespace Networking1
         {
             return content.Load<Texture2D>(assetName);
         }
+
+        internal static SpriteFont getFont(string assetName)
+        {
+            return content.Load<SpriteFont>(assetName);
+        }
     }
 }

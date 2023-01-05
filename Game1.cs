@@ -16,6 +16,8 @@ namespace Networking1
         internal Main main;
         internal ServerOrClient SorC;
 
+        internal bool connected = false;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -53,7 +55,7 @@ namespace Networking1
             Input.Update(gameTime);
 
             main.Update(gameTime);
-            SorC.Update(gameTime);
+            SorC.Update(gameTime, connected);
 
             if (SorC.Connect.activated == true)
                 if (SorC.Server.activated == true)
@@ -64,8 +66,6 @@ namespace Networking1
                     server.Start();
 
                     SorC.Connect.activated = false;
-
-                    main.sw2.activated = true;
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace Networking1
 
                     SorC.Connect.activated = false;
 
-                    main.sw.activated = true;
+                    connected = true;
                 }
 
             base.Update(gameTime);
