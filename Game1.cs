@@ -1,9 +1,9 @@
-﻿using Lidgren.Network;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.ComponentModel.Design.Serialization;
+using LiteNetLib;
 
 namespace Networking1
 {
@@ -57,45 +57,28 @@ namespace Networking1
             main.Update(gameTime);
             SorC.Update(gameTime);
 
-
-            if (SorC.Server.pressed == true)
+            if(SorC.Server.pressed)
             {
-                var config = new NetPeerConfiguration("application name")
-                { Port = portNr };
-                var server = new NetServer(config);
-                server.Start();
+                EventBasedNetListener listener = new EventBasedNetListener();
+                NetManager server = new NetManager(listener);
+                server.Start(9050 /* port */);
 
-                main.messages.Add("started Server: " + portNr);
-
-                SorC.Server.pressed = false;
-                SorC.Server.Name = "Server";
                 SorC.PeerType = ServerOrClient.Peer.Server;
             }
 
-
-
-
-
-
-
-            if (SorC.Client.pressed == true && SorC.PeerType == ServerOrClient.Peer.None)
+            if(SorC.Client.pressed)
             {
-                var config = new NetPeerConfiguration("application name");
-                var client = new NetClient(config);
+                EventBasedNetListener listener = new EventBasedNetListener();
+                NetManager client = new NetManager(listener);
                 client.Start();
-                client.Connect(host: "127.0.0.1", port: portNr);
+                client.Connect("192.169.100.254" /* host ip or name */, 9050 /* port */, "SomeConnectionKey" /* text key or NetDataWriter */);
 
-                main.messages.Add("connectd to host: " + portNr);
+                main.messages.Add(client.ConnectedPeersCount.ToString());
 
-                var message = client.CreateMessage();
-                message.Write("New Client Connected");
-
-                main.messages.Add(client.SendMessage(message, NetDeliveryMethod.ReliableOrdered).ToString());
-
-                SorC.Client.pressed = false;
-                SorC.Client.Name = "Client";
                 SorC.PeerType = ServerOrClient.Peer.Client;
             }
+
+
 
             base.Update(gameTime);
         }
