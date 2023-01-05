@@ -16,7 +16,7 @@ namespace Networking1
         internal Main main;
         internal ServerOrClient SorC;
 
-        internal int portNr = 88888;
+        internal int portNr = 8888;
 
         public Game1()
         {
@@ -58,7 +58,7 @@ namespace Networking1
             SorC.Update(gameTime);
 
 
-            if (SorC.Server.pressed == true || SorC.PeerType == ServerOrClient.Peer.Server)
+            if (SorC.Server.pressed == true)
             {
                 var config = new NetPeerConfiguration("application name")
                 { Port = portNr };
