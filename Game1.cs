@@ -16,6 +16,7 @@ namespace Networking1
         internal Main main;
         internal ServerOrClient SorC;
 
+        internal int messagessent = 0;
 
         internal string IP = "192.168.100.117";
         internal int portNr = 14242;
@@ -98,11 +99,18 @@ namespace Networking1
                 {
                     switch (message.MessageType)
                     {
-                        case NetIncomingMessageType.DebugMessage:
+                        case NetIncomingMessageType.Data:
                             main.messages.Add(message.ReadString());
                             break;
                     }
                 }
+            }
+
+            if(messagessent != main.messages.Count)
+            {
+                messagessent = main.messages.Count;
+                NetOutgoingMessage message = client.CreateMessage(main.messages[main.messages.Count - 1]);
+                client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             }
 
             base.Update(gameTime);
