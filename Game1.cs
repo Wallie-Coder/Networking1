@@ -102,6 +102,9 @@ namespace Networking1
                         case NetIncomingMessageType.Data:
                             main.messages.Add(message.ReadString());
                             break;
+                        case NetIncomingMessageType.DebugMessage:
+                            main.messages.Add(message.ReadString());
+                            break;
                     }
                 }
             }
