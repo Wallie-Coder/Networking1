@@ -92,10 +92,10 @@ namespace Networking1
                 SorC.PeerType = ServerOrClient.Peer.Client;
             }
 
-            if (SorC.PeerType == ServerOrClient.Peer.Client)
+            if (SorC.PeerType == ServerOrClient.Peer.Server)
             {
                 NetIncomingMessage message;
-                while ((message = client.ReadMessage()) != null)
+                while ((message = server.ReadMessage()) != null)
                 {
                     switch (message.MessageType)
                     {
@@ -106,11 +106,11 @@ namespace Networking1
                 }
             }
 
-            if(messagessent != main.messages.Count)
+            if(messagessent != main.messages.Count && SorC.PeerType == ServerOrClient.Peer.Client)
             {
-                messagessent = main.messages.Count;
                 NetOutgoingMessage message = client.CreateMessage(main.messages[main.messages.Count - 1]);
                 client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+                messagessent = main.messages.Count;
             }
 
             base.Update(gameTime);
