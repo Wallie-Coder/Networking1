@@ -16,7 +16,14 @@ namespace Networking1
         internal Main main;
         internal ServerOrClient SorC;
 
-        internal int portNr = 8888;
+
+        internal string IP = "192.168.100.117";
+        internal int portNr = 14242;
+
+        internal NetClient client;
+        internal NetServer server;
+
+        internal NetPeerConfiguration config = new NetPeerConfiguration("chat");
 
         public Game1()
         {
@@ -60,9 +67,7 @@ namespace Networking1
 
             if (SorC.Server.pressed == true)
             {
-                var config = new NetPeerConfiguration("application name")
-                { Port = portNr };
-                var server = new NetServer(config);
+                server = new NetServer(config);
                 server.Start();
 
                 main.messages.Add("started Server: " + portNr);
@@ -73,28 +78,31 @@ namespace Networking1
             }
 
 
-
-
-
-
-
             if (SorC.Client.pressed == true && SorC.PeerType == ServerOrClient.Peer.None)
             {
-                var config = new NetPeerConfiguration("application name");
-                var client = new NetClient(config);
+                client = new NetClient(config);
                 client.Start();
-                client.Connect(host: "127.0.0.1", port: portNr);
+                client.Connect(host: IP, port: portNr, client.CreateMessage("hello it works"));
 
                 main.messages.Add("connectd to host: " + portNr);
-
-                var message = client.CreateMessage();
-                message.Write("New Client Connected");
-
-                main.messages.Add(client.SendMessage(message, NetDeliveryMethod.ReliableOrdered).ToString());
 
                 SorC.Client.pressed = false;
                 SorC.Client.Name = "Client";
                 SorC.PeerType = ServerOrClient.Peer.Client;
+            }
+
+            if (SorC.PeerType == ServerOrClient.Peer.Client)
+            {
+                NetIncomingMessage message;
+                while ((message = client.ReadMessage()) != null)
+                {
+                    switch (message.MessageType)
+                    {
+                        case NetIncomingMessageType.DebugMessage:
+                            main.messages.Add(message.ReadString());
+                            break;
+                    }
+                }
             }
 
             base.Update(gameTime);
