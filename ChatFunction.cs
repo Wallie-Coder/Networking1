@@ -23,8 +23,15 @@ namespace Networking1
             foreach (Keys k in Input.KeysJustPressed())
                 if (k == Keys.Enter)
                 {
+                    s.Trim();
+                    if (s.StartsWith("/"))
+                    {
+                        s = s.Remove(0, 1);
+                        s.Trim();
+                        Game1.portNr = Int32.Parse(s);
+                    }
                     messages.Add(new Message(s, "Me", Color.DarkBlue));
-                    s = " ";
+                    s = "";
                     
                 }
                 else
@@ -36,6 +43,14 @@ namespace Networking1
                     {
                         s = s.Remove(s.Count() - 1);
                     }
+                }
+                else if(k == Keys.OemQuestion)
+                {
+                    s += "/";
+                }
+                else if(k.ToString().Length > 1)
+                {
+                    s += k.ToString().Remove(0, 1);
                 }
                 else
                     s += k.ToString();
