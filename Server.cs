@@ -14,6 +14,7 @@ namespace Networking1
         public override void Initialize()
         {
             thisPeer = new NetServer(Game1.config);
+
             thisPeer.Start();
 
             ChatFunction.messages.Add(new Message("started Server: " + Game1.portNr, "Server"));

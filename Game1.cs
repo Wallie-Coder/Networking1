@@ -72,6 +72,7 @@ namespace Networking1
 
             if (Menu.Server.pressed)
             {
+                config = new NetPeerConfiguration("chat") { Port = portNr };
                 Menu.Server.pressed = false;
                 Menu.Server.Name = "Server";
                 activePeer = new Server();
@@ -79,6 +80,7 @@ namespace Networking1
             }
             if (Menu.Client.pressed)
             {
+                config = new NetPeerConfiguration("chat") { Port = portNr };
                 Menu.Client.pressed = false;
                 Menu.Client.Name = "Client";
                 activePeer = new Client();
