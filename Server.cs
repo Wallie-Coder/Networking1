@@ -21,17 +21,14 @@ namespace Networking1
 
         public override void Update(GameTime time)
         {
-            ReceiveMessage(thisPeer);
-
-            
-
             base.Update(time);
         }
 
         public override void SentMessage()
         {
-            if (ChatFunction.messages.Count < messageCount)
+            if (ChatFunction.messages.Count > messageCount)
             {
+                messageCount = ChatFunction.messages.Count;
 
                 NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1]);
 
