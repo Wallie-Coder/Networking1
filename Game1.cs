@@ -107,8 +107,8 @@ namespace Networking1
             Menu.Draw(_spriteBatch);
             ChatFunction.Draw(_spriteBatch);
 
-            _spriteBatch.DrawString(Input.getFont("file"),"portNr: " + portNr.ToString() + "  (1024-49151)", new Vector2(30, 30), Color.Black);
-            _spriteBatch.DrawString(Input.getFont("file"), "IP Adress: " + IP, new Vector2(30, 60), Color.Black);
+            _spriteBatch.DrawString(Input.getFont("file"),"RoomCode: " + portNr.ToString() + "  (1024-49151)", new Vector2(30, 30), Color.Black);
+            _spriteBatch.DrawString(Input.getFont("file"), "Room IP Adres: " + IP, new Vector2(30, 60), Color.Black);
 
             _spriteBatch.End();
 

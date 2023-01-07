@@ -37,7 +37,7 @@ namespace Networking1
                         s = s.Remove(0, 4);
                         s.Trim();
                         Game1.IP = s;
-                        messages.Add(new Message("IP: " + s, "Server"));
+                        messages.Add(new Message("Server IP: " + s, "Server"));
                     }
                     else
                     { 

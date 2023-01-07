@@ -60,5 +60,47 @@ namespace Networking1
 
             }
         }
+
+        public override void ReceiveMessage(NetPeer peer)
+        {
+            NetIncomingMessage im;
+            while ((im = peer.ReadMessage()) != null)
+            {
+                switch (im.MessageType)
+                {
+                    case NetIncomingMessageType.Data:
+                        ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString(), Color.DarkRed));
+                        messageCount++;
+                        break;
+
+                    case NetIncomingMessageType.StatusChanged:
+                        // handle connection status messages
+                        switch (im.SenderConnection.Status)
+                        {
+                            case NetConnectionStatus.Connected:
+                                ChatFunction.messages.Add(new Message("Connected", im.SenderEndPoint.ToString()));
+                                messageCount++;
+                                break;
+                            case NetConnectionStatus.Disconnected:
+                                ChatFunction.messages.Add(new Message("DisConnected", im.SenderEndPoint.ToString()));
+                                messageCount++;
+                                break;
+                        }
+                        break;
+
+                    case NetIncomingMessageType.DebugMessage:
+                        // handle debug messages
+                        // (only received when compiled in DEBUG mode)
+                        ChatFunction.messages.Add(new Message(im.ReadString(), "Server"));
+                        messageCount++;
+                        break;
+
+                    default:
+                        ChatFunction.messages.Add(new Message("unhandled message with type: " + im.MessageType, "Server"));
+                        messageCount++;
+                        break;
+                }
+            }
+        }
     }
 }
