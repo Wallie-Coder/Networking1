@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.ComponentModel.Design.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using Lidgren.Network;
 
 namespace Networking1
@@ -19,12 +22,12 @@ namespace Networking1
         internal int messagessent = 0;
 
         internal string IP = "192.168.100.117";
-        internal int portNr = 14242;
+        internal int portNr = 13055;
 
         internal NetClient client;
-        internal NetServer server;
+        internal static NetServer server;
 
-        internal NetPeerConfiguration config = new NetPeerConfiguration("chat");
+        internal NetPeerConfiguration config = new NetPeerConfiguration("chat") { Port = 13055};
 
         public Game1()
         {
@@ -92,31 +95,65 @@ namespace Networking1
                 SorC.PeerType = ServerOrClient.Peer.Client;
             }
 
-            if (SorC.PeerType == ServerOrClient.Peer.Server)
+
+            if(SorC.PeerType == ServerOrClient.Peer.Server)
             {
-                NetIncomingMessage message;
-                while ((message = server.ReadMessage()) != null)
+                ReceiveMessages(server);
+            }
+            if(SorC.PeerType == ServerOrClient.Peer.Client)
+            {
+                ReceiveMessages(client);
+            }
+
+            if(messagessent != main.messages.Count)
+            {
+                if (SorC.PeerType == ServerOrClient.Peer.Client)
                 {
-                    switch (message.MessageType)
-                    {
-                        case NetIncomingMessageType.Data:
-                            main.messages.Add(message.ReadString());
-                            break;
-                        case NetIncomingMessageType.DebugMessage:
-                            main.messages.Add(message.ReadString());
-                            break;
-                    }
+                    NetOutgoingMessage message = client.CreateMessage(main.messages[main.messages.Count - 1]);
+                    client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+                    messagessent = main.messages.Count;
+                }
+                if (SorC.PeerType == ServerOrClient.Peer.Server)
+                {
+                    NetOutgoingMessage message = server.CreateMessage(main.messages[main.messages.Count - 1]);
+                    server.SendToAll(message, NetDeliveryMethod.ReliableOrdered);
                 }
             }
 
-            if(messagessent != main.messages.Count && SorC.PeerType == ServerOrClient.Peer.Client)
-            {
-                NetOutgoingMessage message = client.CreateMessage(main.messages[main.messages.Count - 1]);
-                client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
-                messagessent = main.messages.Count;
-            }
-
             base.Update(gameTime);
+        }
+
+        public void ReceiveMessages(NetPeer peer)
+        {
+            NetIncomingMessage im;
+            while ((im = peer.ReadMessage()) != null)
+            {
+                switch (im.MessageType)
+                {
+                    case NetIncomingMessageType.Data:
+                        main.messages.Add(im.ReadString());
+                        break;
+                    case NetIncomingMessageType.StatusChanged:
+                        // handle connection status messages
+                        switch (im.SenderConnection.Status)
+                        {
+
+                        }
+                        break;
+
+                    case NetIncomingMessageType.DebugMessage:
+                        // handle debug messages
+                        // (only received when compiled in DEBUG mode)
+                        main.messages.Add(im.ReadString());
+                        break;
+
+                    /* .. */
+                    default:
+                        Console.WriteLine("unhandled message with type: "
+                            + im.MessageType);
+                        break;
+                }
+            }
         }
 
         protected override void Draw(GameTime gameTime)
