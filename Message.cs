@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Design;
+using Microsoft.Xna.Framework;
 
 namespace Networking1
 {
@@ -12,10 +13,12 @@ namespace Networking1
     {
         internal string text = "";
         internal string senderName;
-        internal Color color = Color.Black;
+        internal Color color;
 
-        internal Message(string text, string senderName)
+        internal Message(string text, string senderName, Color? color = null)
         {
+            this.color = color ?? Color.Black;
+
             this.text = text;
             this.senderName = senderName;
         }

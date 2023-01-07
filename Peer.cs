@@ -43,7 +43,7 @@ namespace Networking1
                 switch (im.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString()));
+                        ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString(), Color.DarkRed));
                         messageCount++;
                         break;
 

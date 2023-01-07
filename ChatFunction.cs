@@ -23,7 +23,7 @@ namespace Networking1
             foreach (Keys k in Input.KeysJustPressed())
                 if (k == Keys.Enter)
                 {
-                    messages.Add(new Message(s, "Me"));
+                    messages.Add(new Message(s, "Me", Color.DarkBlue));
                     s = " ";
                     
                 }
@@ -47,7 +47,7 @@ namespace Networking1
 
             for (int i = 0; i < messages.Count; i++)
             {
-                batch.DrawString(Input.getFont("File"), messages[i].senderName + ": " + messages[i].text, new Vector2(10, 500 - (messages.Count - i + 1) * 20), Color.Black);
+                batch.DrawString(Input.getFont("File"), messages[i].senderName + ": " + messages[i].text, new Vector2(10, 500 - (messages.Count - i + 1) * 20), messages[i].color);
             }
 
             if(s != null)
