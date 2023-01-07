@@ -40,6 +40,8 @@ namespace Networking1
             NetIncomingMessage im;
             while ((im = peer.ReadMessage()) != null)
             {
+                messageCount++;
+
                 switch (im.MessageType)
                 {
                     case NetIncomingMessageType.Data:
