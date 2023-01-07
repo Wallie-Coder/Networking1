@@ -45,7 +45,6 @@ namespace Networking1
                     case NetIncomingMessageType.Data:
                         string s = im.ReadString();
                         string[] splits = s.Split("\\r\\");
-                        
                         foreach(string sub in splits)
                             ChatFunction.messages.Add(new Message(sub, im.SenderEndPoint.ToString(), Color.DarkRed));
                         messageCount++;
