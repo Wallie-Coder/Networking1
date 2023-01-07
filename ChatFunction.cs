@@ -27,10 +27,25 @@ namespace Networking1
                     if (s.StartsWith("/"))
                     {
                         s = s.Remove(0, 1);
-                        s.Trim();
-                        Game1.portNr = Int32.Parse(s);
+                        if (s.StartsWith("ROOMCODE "))
+                        {
+                            s = s.Remove(0, 9);
+                            s.Trim();
+                            Game1.portNr = Int32.Parse(s);
+                            messages.Add(new Message("RoomCode: " + Game1.portNr, "Server"));
+                        }
+                        else if(s.StartsWith("IP "))
+                        {
+                            s = s.Remove(0, 3);
+                            s.Trim();
+                            Game1.IP = s;
+                            messages.Add(new Message("IP: " + s, "Server"));
+                        }
                     }
-                    messages.Add(new Message(s, "Me", Color.DarkBlue));
+                    else
+                    {
+                        messages.Add(new Message(s, "Me", Color.DarkBlue));
+                    }
                     s = "";
                     
                 }
@@ -44,9 +59,13 @@ namespace Networking1
                         s = s.Remove(s.Count() - 1);
                     }
                 }
-                else if(k == Keys.OemQuestion)
+                else if (k == Keys.OemQuestion)
                 {
                     s += "/";
+                }
+                else if (k == Keys.OemPeriod)
+                {
+                    s += ".";
                 }
                 else if(k.ToString().Length > 1)
                 {

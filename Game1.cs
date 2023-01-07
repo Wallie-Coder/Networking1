@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Lidgren.Network;
+using System.Net;
 
 namespace Networking1
 {
@@ -38,6 +39,8 @@ namespace Networking1
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            IP = Dns.GetHostByName(Dns.GetHostName()).AddressList[1].ToString();
         }
 
         protected override void LoadContent()
@@ -105,6 +108,7 @@ namespace Networking1
             ChatFunction.Draw(_spriteBatch);
 
             _spriteBatch.DrawString(Input.getFont("file"),"portNr: " + portNr.ToString() + "  (1024-49151)", new Vector2(30, 30), Color.Black);
+            _spriteBatch.DrawString(Input.getFont("file"), "IP Adress: " + IP, new Vector2(30, 60), Color.Black);
 
             _spriteBatch.End();
 
