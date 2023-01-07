@@ -24,30 +24,23 @@ namespace Networking1
                 if (k == Keys.Enter)
                 {
                     s.Trim();
-                    if (s.StartsWith("/"))
+
+                    if (s.StartsWith("/ROOMCODE "))
                     {
-                        s = s.Remove(0, 1);
-                        if (s.StartsWith("ROOMCODE "))
-                        {
-                            s = s.Remove(0, 9);
-                            s.Trim();
-                            Game1.portNr = Int32.Parse(s);
-                            messages.Add(new Message("RoomCode: " + Game1.portNr, "Server"));
-                        }
-                        else if(s.StartsWith("IP "))
-                        {
-                            s = s.Remove(0, 3);
-                            s.Trim();
-                            Game1.IP = s;
-                            messages.Add(new Message("IP: " + s, "Server"));
-                        }
-                        if (s.StartsWith("STATUS "))
-                        {
-                            messages.Add(new Message("Request Status", "Server"));
-                        }
+                        s = s.Remove(0, 10);
+                        s.Trim();
+                        Game1.portNr = Int32.Parse(s);
+                        messages.Add(new Message("RoomCode: " + Game1.portNr, "Server"));
+                    }
+                    else if(s.StartsWith("/IP "))
+                    {
+                        s = s.Remove(0, 4);
+                        s.Trim();
+                        Game1.IP = s;
+                        messages.Add(new Message("IP: " + s, "Server"));
                     }
                     else
-                    {
+                    { 
                         messages.Add(new Message(s, "Me", Color.DarkBlue));
                     }
                     s = "";

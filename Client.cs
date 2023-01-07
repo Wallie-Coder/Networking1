@@ -31,16 +31,30 @@ namespace Networking1
         {
             if (ChatFunction.messages.Count > messageCount)
             {
-                messageCount++;
+                messageCount = ChatFunction.messages.Count;
 
                 NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1].text);
 
                 NetClient temp = (NetClient)thisPeer;
 
-                if (ChatFunction.messages[ChatFunction.messages.Count - 1].text.Contains("STATUS"))
+                if (ChatFunction.messages[ChatFunction.messages.Count - 1].text.Contains("/STATISTICS"))
                 {
                     ChatFunction.messages.Add(new Message(temp.Statistics.ToString(), "Server"));
+                    for (int i = 0; i < 4; i++)
+                    {
+                        ChatFunction.messages.Add(new Message("", ""));
+                    }
+                    return;
                 }
+
+                if (ChatFunction.messages[ChatFunction.messages.Count - 1].text.Contains("/PING"))
+                {
+                    ChatFunction.messages.Add(new Message("ping: " + (temp.Connections[0].AverageRoundtripTime).ToString() + " ms", "Server"));
+                    return;
+                }
+
+                if (ChatFunction.messages[ChatFunction.messages.Count - 1].text.Length < 2)
+                    return;
 
                 temp.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
 

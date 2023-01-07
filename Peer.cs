@@ -43,10 +43,7 @@ namespace Networking1
                 switch (im.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        string s = im.ReadString();
-                        string[] splits = s.Split("\\r\\");
-                        foreach(string sub in splits)
-                            ChatFunction.messages.Add(new Message(sub, im.SenderEndPoint.ToString(), Color.DarkRed));
+                        ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString(), Color.DarkRed));
                         messageCount++;
                         break;
 
