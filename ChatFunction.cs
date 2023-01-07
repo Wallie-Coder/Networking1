@@ -41,13 +41,16 @@ namespace Networking1
                             Game1.IP = s;
                             messages.Add(new Message("IP: " + s, "Server"));
                         }
+                        if (s.StartsWith("STATUS "))
+                        {
+                            messages.Add(new Message("Request Status", "Server"));
+                        }
                     }
                     else
                     {
                         messages.Add(new Message(s, "Me", Color.DarkBlue));
                     }
                     s = "";
-                    
                 }
                 else
                     if (k == Keys.Space)

@@ -31,11 +31,16 @@ namespace Networking1
         {
             if (ChatFunction.messages.Count > messageCount)
             {
-                messageCount = ChatFunction.messages.Count;
+                messageCount++;
 
                 NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1].text);
 
                 NetClient temp = (NetClient)thisPeer;
+
+                if (ChatFunction.messages[ChatFunction.messages.Count - 1].text.Contains("STATUS"))
+                {
+                    ChatFunction.messages.Add(new Message(temp.Statistics.ToString(), "Server"));
+                }
 
                 temp.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
 
