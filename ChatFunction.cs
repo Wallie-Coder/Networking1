@@ -39,6 +39,14 @@ namespace Networking1
                         Game1.IP = s;
                         messages.Add(new Message("Server IP: " + s, "Server"));
                     }
+                    else if (s.StartsWith("/DISCONNECT") && Game1.activePeer is Client)
+                    {
+                        Game1.activePeer.thisPeer.Shutdown("bye");
+                        Game1.activePeer = null;
+                        messages.Clear();
+                        Menu.Client.Name = "start client";
+                        messages.Add(new Message("Disconnected", "Me", Color.DarkBlue));
+                    }
                     else
                     { 
                         messages.Add(new Message(s, "Me", Color.DarkBlue));
@@ -77,7 +85,8 @@ namespace Networking1
 
             for (int i = 0; i < messages.Count; i++)
             {
-                batch.DrawString(Input.getFont("File"), messages[i].senderName + ": " + messages[i].text, new Vector2(10, 500 - (messages.Count - i + 1) * 20), messages[i].color);
+                if(messages.Count < 20 || i > messages.Count - 20)
+                    batch.DrawString(Input.getFont("File"), messages[i].senderName + ": " + messages[i].text, new Vector2(10, 500 - (messages.Count - i + 1) * 20), messages[i].color);
             }
 
             if(s != null)

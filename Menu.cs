@@ -11,9 +11,9 @@ namespace Networking1
     internal class Menu
     {
 
-        internal Button Server = new Button(new Vector2(510, 50), new Vector2(150, 100), "start server");
+        internal static Button Server = new Button(new Vector2(510, 50), new Vector2(150, 100), "start server");
 
-        internal Button Client = new Button(new Vector2(510, 300), new Vector2(150, 100), "start client");
+        internal static Button Client = new Button(new Vector2(510, 300), new Vector2(150, 100), "start client");
 
 
         internal void Update(GameTime Time)

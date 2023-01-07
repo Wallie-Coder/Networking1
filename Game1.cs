@@ -75,6 +75,7 @@ namespace Networking1
 
             if (Menu.Server.pressed)
             {
+                ChatFunction.messages.Clear();
                 config = new NetPeerConfiguration("chat") { Port = portNr };
                 Menu.Server.pressed = false;
                 Menu.Server.Name = "Server";
@@ -83,6 +84,7 @@ namespace Networking1
             }
             if (Menu.Client.pressed)
             {
+                ChatFunction.messages.Clear();
                 config = new NetPeerConfiguration("chat") { Port = portNr };
                 Menu.Client.pressed = false;
                 Menu.Client.Name = "Client";
@@ -92,7 +94,20 @@ namespace Networking1
 
 
             if (activePeer != null)
+            {
                 activePeer.Update(gameTime);
+                if (activePeer.thisPeer.ConnectionsCount > 0)
+                {
+                    if (activePeer.thisPeer.Connections[0].Status == NetConnectionStatus.Disconnected)
+                    {
+                        activePeer.thisPeer.Shutdown("bye");
+                        activePeer = null;
+                    }
+                }
+            }
+
+
+
 
 
             base.Update(gameTime);
