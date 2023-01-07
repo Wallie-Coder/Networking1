@@ -104,7 +104,7 @@ namespace Networking1
             Menu.Draw(_spriteBatch);
             ChatFunction.Draw(_spriteBatch);
 
-            _spriteBatch.DrawString(Input.getFont("file"), portNr.ToString(), new Vector2(30, 30), Color.Black);
+            _spriteBatch.DrawString(Input.getFont("file"),"portNr: " + portNr.ToString() + "  (1024-49151)", new Vector2(30, 30), Color.Black);
 
             _spriteBatch.End();
 
