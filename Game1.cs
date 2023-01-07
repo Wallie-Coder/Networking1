@@ -19,7 +19,7 @@ namespace Networking1
         internal Menu Menu;
 
         internal static string IP = "192.168.100.117";
-        internal static int portNr = 13055;
+        internal static int portNr = 12345;
 
         internal static NetPeerConfiguration config = new NetPeerConfiguration("chat") { Port = portNr};
 
