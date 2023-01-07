@@ -40,12 +40,11 @@ namespace Networking1
             NetIncomingMessage im;
             while ((im = peer.ReadMessage()) != null)
             {
-                messageCount++;
-
                 switch (im.MessageType)
                 {
                     case NetIncomingMessageType.Data:
                         ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString()));
+                        messageCount++;
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
@@ -54,9 +53,11 @@ namespace Networking1
                         {
                             case NetConnectionStatus.Connected:
                                 ChatFunction.messages.Add(new Message("Connected", im.SenderEndPoint.ToString()));
+                                messageCount++;
                                 break;
                             case NetConnectionStatus.Disconnected:
                                 ChatFunction.messages.Add(new Message("DisConnected", im.SenderEndPoint.ToString()));
+                                messageCount++;
                                 break;
                         }
                         break;
@@ -65,10 +66,12 @@ namespace Networking1
                         // handle debug messages
                         // (only received when compiled in DEBUG mode)
                         ChatFunction.messages.Add(new Message(im.ReadString(), "Server"));
+                        messageCount++;
                         break;
 
                     default:
                         ChatFunction.messages.Add(new Message("unhandled message with type: " + im.MessageType, "Server"));
+                        messageCount++;
                         break;
                 }
             }
