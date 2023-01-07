@@ -43,7 +43,7 @@ namespace Networking1
                 switch (im.MessageType)
                 {
                     case NetIncomingMessageType.Data:
-                        ChatFunction.messages.Add(im.ReadString());
+                        ChatFunction.messages.Add(new Message(im.ReadString(), im.SenderEndPoint.ToString()));
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
@@ -51,10 +51,10 @@ namespace Networking1
                         switch (im.SenderConnection.Status)
                         {
                             case NetConnectionStatus.Connected:
-                                ChatFunction.messages.Add("Connected");
+                                ChatFunction.messages.Add(new Message("Connected", im.SenderEndPoint.ToString()));
                                 break;
                             case NetConnectionStatus.Disconnected:
-                                ChatFunction.messages.Add("DisConnected");
+                                ChatFunction.messages.Add(new Message("DisConnected", im.SenderEndPoint.ToString()));
                                 break;
                         }
                         break;
@@ -62,11 +62,11 @@ namespace Networking1
                     case NetIncomingMessageType.DebugMessage:
                         // handle debug messages
                         // (only received when compiled in DEBUG mode)
-                        ChatFunction.messages.Add(im.ReadString());
+                        ChatFunction.messages.Add(new Message(im.ReadString(), "Server"));
                         break;
 
                     default:
-                        ChatFunction.messages.Add("unhandled message with type: " + im.MessageType);
+                        ChatFunction.messages.Add(new Message("unhandled message with type: " + im.MessageType, "Server"));
                         break;
                 }
             }

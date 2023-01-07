@@ -16,7 +16,7 @@ namespace Networking1
             thisPeer = new NetServer(Game1.config);
             thisPeer.Start();
 
-            ChatFunction.messages.Add("started Server: " + Game1.portNr);
+            ChatFunction.messages.Add(new Message("started Server: " + Game1.portNr, "Server"));
         }
 
         public override void Update(GameTime time)
@@ -30,7 +30,7 @@ namespace Networking1
             {
                 messageCount = ChatFunction.messages.Count;
 
-                NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1]);
+                NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1].text);
 
                 NetServer temp = (NetServer)thisPeer;
 

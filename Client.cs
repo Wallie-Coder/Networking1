@@ -32,7 +32,7 @@ namespace Networking1
             if (ChatFunction.messages.Count < messageCount)
             {
 
-                NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1]);
+                NetOutgoingMessage om = thisPeer.CreateMessage(ChatFunction.messages[ChatFunction.messages.Count - 1].text);
 
                 NetClient temp = (NetClient)thisPeer;
 
