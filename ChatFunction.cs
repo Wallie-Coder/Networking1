@@ -10,20 +10,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Networking1
 {
-    internal class Main
+    internal static class ChatFunction
     {
 
-        public List<String> messages = new List<string>();
+        public static List<String> messages = new List<string>();
 
-        int timer;
-        string s;
+        static int timer;
+        static string s;
 
-        public Main() 
-        { 
-
-        }
-
-        public void Update(GameTime time)
+        public static void Update(GameTime time)
         {
             foreach (Keys k in Input.KeysJustPressed())
                 if (k == Keys.Enter)
@@ -45,7 +40,7 @@ namespace Networking1
                     s += k.ToString();
         }
 
-        public void Draw(SpriteBatch batch)
+        public static void Draw(SpriteBatch batch)
         {
             batch.Draw(Input.getSprite("White_Pixel"), new Vector2(0, 475), null, Color.DarkGray, 0, Vector2.Zero, new Vector2(400, 25), SpriteEffects.None, 0f);
 

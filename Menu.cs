@@ -8,11 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Networking1
 {
-    internal class ServerOrClient
+    internal class Menu
     {
-        internal enum Peer {Server, Client, None}
-
-        internal Peer PeerType = Peer.None;
 
         internal Button Server = new Button(new Vector2(510, 50), new Vector2(150, 100), "start server");
 
@@ -21,30 +18,25 @@ namespace Networking1
 
         internal void Update(GameTime Time)
         {
-            if (PeerType == Peer.None)
-            {
-                Server.Update(Time);
-                Client.Update(Time);
-            }
-
-            //Server.Update(Time);
-            //Client.Update(Time);
+            Server.Update(Time);
+            Client.Update(Time);
         }
 
         internal void Draw(SpriteBatch Batch)
         {
-
-            if (PeerType == Peer.None)
+            if (Game1.activePeer == null)
             {
                 Server.Draw(Batch);
                 Client.Draw(Batch);
             }
-            if (PeerType == Peer.Client)
+            else if(Game1.activePeer.GetType() == typeof(Client))
+            {
                 Client.Draw(Batch);
-            if (PeerType == Peer.Server)
+            }
+            else if (Game1.activePeer.GetType() == typeof(Server))
+            {
                 Server.Draw(Batch);
-
-
+            }
         }
     }
 }
