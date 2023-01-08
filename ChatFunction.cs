@@ -47,6 +47,10 @@ namespace Networking1
                         Menu.Client.Name = "start client";
                         messages.Add(new Message("Disconnected", "Me", Color.DarkBlue));
                     }
+                    else if (s.StartsWith("/CLEAR"))
+                    {
+                        messages.Clear();
+                    }
                     else
                     { 
                         messages.Add(new Message(s, "Me", Color.DarkBlue));
